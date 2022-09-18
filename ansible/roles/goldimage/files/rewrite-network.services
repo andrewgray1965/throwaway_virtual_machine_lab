@@ -1,0 +1,17 @@
+#  This file is part of systemd.
+# inital write, agray Sep2022
+
+[Unit]
+Description=Automate static network cfg
+DefaultDependencies=no
+After=systemd-remount-fs.service
+Before=systemd-sysusers.service sysinit.target shutdown.target
+ConditionPathIsReadWrite=/etc
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/local/bin/rewrite-network-cfg
+
+[Install]
+WantedBy=network-online.target
