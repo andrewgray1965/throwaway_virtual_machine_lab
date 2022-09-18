@@ -1,20 +1,33 @@
-# vm_ip_set_from_mac
-ansible: run a systemd startup process to set the IP number from the mac address.
+# Throwaway virtual machine lab.
 
-This code uses the last digit of the <ul>mac address</ul> to set the ip number on boot
+This collection of scripts is used to create a bunch of virtual machines quickly.
+The typical create time is 1 second or so, ie faster than the boot time of the vm.
 
-example 52:54:00:aa:bb:a0 -> 192.168.1.160 (because a0 hex == 160 decimal)
+overview how to:
+* create an lvm thin volume storage pool
+* create a master image.
+* thin clone the image and boot the clone
 
-use case: 
+# pre-requisites instructions.
 <pre>
-    throwaway virtual machines used to test ansible code against, 
-    or anything else were you want to create a vm, and know what it's IP will be,
-    without having to setup dhcp services.
+* create the thin pool volume, using a fast nvme disk (if you only have ssd then change nvmeXn1 to sdX)
+     pvcreate /dev/nvme0n1
+* create a volume group on it
+     vgcreate vgt /dev/nvme0n1
+* create a thin volume in the group that we can use to snapshot
+     lvcreate -L 100G --thinpool tpvol vgt
+* create 2x volumes to use with the virtual machine builds,  1 for rhel8, 1 for rhel7
+     lvcreate -V 20G --thin -n gold8 vgt/tpvol
+     lvcreate -V 20G --thin -n gold7 vgt/tpvol
 </pre>
 
-Change the code to use:
-<li> your base hostname (default is snap -> ie snap160)</li>
-<li> your subnet (default is 192.168.1.0/24)(/li>
+Now, build two minimal install virtual machines from the rhel8 and rhel7 iso's on these new lvm volumes. Update, patch, install anything you want to be on the cloned copies.
+
+run the virt.make script to create new rhel8 cloned virtual machines like this, where the ip will be 192.168.1.160
+<pre>virt.make 8 160</pre>
+
+for a lot of them, do ...
+<pre>for X = {160..170}; do ./virt.make 8 $X; done</pre>
 
 this is free code, if you find it useful, say thanks.
 Andrew.
