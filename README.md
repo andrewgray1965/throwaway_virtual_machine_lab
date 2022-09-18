@@ -1,5 +1,7 @@
 # Throwaway virtual machine lab.
 
+WORKING ENVironment: a redhat flavoured linux server with 16G ram, a spare nvme (or ssd) disk, 128G ish in size.
+
 This collection of scripts is used to create a bunch of virtual machines quickly.
 Once you have the pre-requisites in place, the typical create time is 1 second or so, 
 eg. faster than the boot time of the vm.
