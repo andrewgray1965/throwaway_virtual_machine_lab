@@ -5,8 +5,8 @@ This code uses the last digit of the mac address to set the ip number
 
 example 52:54:00:aa:bb:a0 -> 192.168.1.160 (because a0 hex == 160 decimal)
 
-use case: throwaway virtual machines used to test ansible code against,
-          or anything else were you want to create a vm, and know what it's IP will be,
+use case: throwaway virtual machines used to test ansible code against, <br>
+          or anything else were you want to create a vm, and know what it's IP will be,<br>
           without having to setup dhcp services.
           
 Change the code to use:
