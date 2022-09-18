@@ -1,0 +1,9 @@
+---
+
+- name: setup the gold images
+  hosts: gold
+  gather_facts: false
+  become: false
+  remote_user: root
+  roles:
+    - goldimage
