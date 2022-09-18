@@ -32,8 +32,17 @@ run the virt.make script to create new rhel8 cloned virtual machines like this, 
 <pre>virt.make 8 160</pre>
 
 for a lot of them, do ...
-<pre>for X = {160..180}; do ./virt.make 8 $X; done</pre>
+<pre>
+usage: ./virt.make 7|8 N; # where 7|8 == rhel7 or rhel8, and N = number 1-254
+for X = {160..180}; do ./virt.make 8 $X; done
+</pre>
 noting you need enough ram in your hypervisor for 20 vm's ...
 
 this is free code, if you find it useful, say thanks.
 Andrew.
+
+<blockquote>
+ Sigh ... Please dont bother telling me that it's insecure to copy the same ssh keys onto each machine.
+ In the context of a throwaway lab that gets rebuilt every 15 mins, I dont care! 
+ Insistently foisting your security needs onto someones elses context is just arrogant.
+</blockquote>
