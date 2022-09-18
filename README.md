@@ -28,6 +28,8 @@ you need a working libvirt and preferably virt-manager gui via x-windows.
 
 Now, create/build two minimal install virtual machines from the rhel8 and rhel7 iso's on these new lvm volumes. Update, patch, install anything you want to be on the cloned copies using virt-manager.
 
+Apply the ansible code to them and shut them down. They are now prepped to be your gold images.
+
 run the virt.make script to create new rhel8 cloned virtual machines like this, where the ip will be 192.168.1.160
 <pre>virt.make 8 160</pre>
 
