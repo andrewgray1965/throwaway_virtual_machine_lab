@@ -6,7 +6,7 @@
 # there's an assumption here that your lvm pool is called vgt,
 # and the the lvm volume has the same name as the virtual machine.
 
-if [[ $1 == '' ]]; do
+if [[ $1 == '' ]]; then
   echo "usage:- $0 \$vmhostName"
   exit;
 fi;
