@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# to remove multiple machines named snap160 to snap 168 do ...
+# for X in {160..168}; do ./virt.clean snap${X}; done
+
+# there's an assumption here that your lvm pool is called vgt,
+# and the the lvm volume has the same name as the virtual machine.
+
+if [[ $1 == '' ]]; do
+  echo "usage:- $0 \$vmhostName"
+  exit;
+fi;
+
+virsh destroy $1;   # force power it off
+sleep 1
+virsh undefine $1;
+lvremove -y /dev/vgt/$1;
+
