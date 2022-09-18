@@ -1,14 +1,19 @@
 # Throwaway virtual machine lab.
 
 This collection of scripts is used to create a bunch of virtual machines quickly.
-The typical create time is 1 second or so, ie faster than the boot time of the vm.
+Once you have the pre-requisites in place, the typical create time is 1 second or so, 
+eg. faster than the boot time of the vm.
 
 overview how to:
 * create an lvm thin volume storage pool
 * create a master image.
 * thin clone the image and boot the clone
 
+These instructions are for rhel/centos streams of linux. If you use debian, then fee free to write up some debian specifics.
+
 # pre-requisites instructions.
+you need a working libvirt and preferably virt-manager gui via x-windows.
+
 <pre>
 * create the thin pool volume, using a fast nvme disk (if you only have ssd then change nvmeXn1 to sdX)
      pvcreate /dev/nvme0n1
@@ -21,13 +26,14 @@ overview how to:
      lvcreate -V 20G --thin -n gold7 vgt/tpvol
 </pre>
 
-Now, build two minimal install virtual machines from the rhel8 and rhel7 iso's on these new lvm volumes. Update, patch, install anything you want to be on the cloned copies.
+Now, create/build two minimal install virtual machines from the rhel8 and rhel7 iso's on these new lvm volumes. Update, patch, install anything you want to be on the cloned copies using virt-manager.
 
 run the virt.make script to create new rhel8 cloned virtual machines like this, where the ip will be 192.168.1.160
 <pre>virt.make 8 160</pre>
 
 for a lot of them, do ...
-<pre>for X = {160..170}; do ./virt.make 8 $X; done</pre>
+<pre>for X = {160..180}; do ./virt.make 8 $X; done</pre>
+noting you need enough ram in your hypervisor for 20 vm's ...
 
 this is free code, if you find it useful, say thanks.
 Andrew.
