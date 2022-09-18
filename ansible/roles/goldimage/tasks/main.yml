@@ -1,0 +1,53 @@
+---
+# tasks file for goldimage
+#
+
+- name: fix ssh so it asks for a password and doesnt save the keys during this playbook only
+  set_fact:
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o PreferredAuthentications=password -o PubKeyAuthentication=no -o PasswordAuthentication=yes"
+
+- name: Copy the ssh priv keys
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/ssh/"
+    mode: 0640
+    group: "ssh_keys"
+  with_fileglob:
+    -  "files/ssh*key"
+  ignore_errors: true
+
+- name: Copy the ssh pub keys
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/ssh/"
+    mode: 0644
+  with_fileglob:
+    -  "files/ssh*key.pub"
+  ignore_errors: true
+
+# if we dont gather facts here, we cant use the major_version variable
+- name: delayed gather facts
+  setup:
+
+- name: copy the setup script to usr local bin
+  copy:
+    src: rewrite-network-cfg.{{ ansible_distribution_major_version }}
+    dest: /usr/local/bin/rewrite-network-cfg
+    mode: 0754
+    setype: bin_t
+    seuser: system_u
+
+- name: setup the file to run on boot under systemd
+  copy:
+    src: rewrite-network.service
+    dest: /usr/lib/systemd/system/rewrite-network.service
+    mode: 0644
+    setype: systemd_unit_file_t
+    seuser: system_u
+
+- name: setup new systemd service to start on boot
+  systemd:
+    name: rewrite-network
+    enabled: true
+    masked: false
+
